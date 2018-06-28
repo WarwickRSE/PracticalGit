@@ -1,0 +1,44 @@
+
+MODULE mod1
+CONTAINS
+FUNCTION convert(name)
+
+  INTEGER :: convert
+  CHARACTER(LEN=*), INTENT(IN) :: name
+  CHARACTER :: first_char
+
+  first_char = name(1:1)
+
+  convert = 0
+  IF (first_char == 'a') THEN
+    PRINT*, 'A'
+    convert = 1
+  ELSE IF (first_char == 'b') THEN
+    PRINT*, 'B'
+    convert = 2
+  ELSE IF (first_char == 'c') THEN
+    PRINT*, 'C'
+    convert = 3
+  ENDIF
+
+
+END FUNCTION
+END MODULE mod1
+
+PROGRAM test
+
+  USE mod1
+  IMPLICIT NONE
+
+  CHARACTER(26) :: name, greet
+  INTEGER :: value
+
+  greet = "Hello!"
+  PRINT*, greet
+
+  name = "abcde"
+  value = convert(name)
+
+  PRINT*, value
+
+END PROGRAM

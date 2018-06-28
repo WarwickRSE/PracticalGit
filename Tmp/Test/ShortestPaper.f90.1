@@ -1,0 +1,97 @@
+PROGRAM EULER_CONJECTURE
+
+IMPLICIT NONE
+
+INTEGER(KIND=16):: exponent=0, maximum=0, i, j, k, l, m, found=0
+INTEGER(KIND=16):: int_1, int_2, int_3, int_4, total, index
+INTEGER(KIND=16), DIMENSION(:), ALLOCATABLE:: numbers
+INTEGER:: a
+REAL(KIND=8):: tolerance
+REAL(KIND=8):: one_over_exp
+REAL(KIND=8):: root, tmp_root
+
+maximum=200
+exponent=5
+tolerance = 2e-5
+one_over_exp = 1./float(exponent)
+
+tmp_root = REAL(maximum, 8)**exponent
+PRINT*, tmp_root, tmp_root**one_over_exp, HUGE(tmp_root), HUGE(int_1)
+
+IF(HUGE(int_1) .LE. tmp_root) THEN
+
+  PRINT*, 'Warning, insufficient integer size' 
+  STOP
+ENDIF
+
+ALLOCATE(numbers(maximum))
+
+DO index=1, maximum 
+  numbers(index) = index**exponent
+ENDDO
+
+DO i=1, maximum
+  int_1 = numbers(i)
+
+  DO j=i, maximum
+    int_2 = numbers(j)
+
+    DO k=j, maximum
+      int_3 = numbers(k)
+
+      DO l=k, maximum
+        total = int_1+int_2+int_3 + numbers(l)
+        !binary search in numbers for this value, going from l on up
+        DO m = l, maximum
+          IF(total == numbers(m)) THEN
+            found = m
+            CONTINUE
+          ENDIF
+        ENDDO
+        IF(found .GT. 0) THEN
+          PRINT*, i, j, k, l
+          PRINT*, int_1, int_2, int_3, numbers(l)
+          PRINT*, total, ' : ', found
+          STOP
+        ENDIF
+      ENDDO
+    ENDDO
+  ENDDO
+ENDDO
+
+END PROGRAM
+
+
+INTEGER FUNCTION simple_binary_search(total, numbers)
+! checks whether nth root of number is an integer. 
+!Floor and maximum are the bounds to search root within. 
+!Return is 0 if non-int, or the integer else
+
+  INTEGER(KIND=8) total, i, stride, sz, index
+  INTEGER(KIND=8), DIMENSION(:):: numbers
+  
+  simple_binary_search = 0
+  sz = SIZE(numbers)
+  stride = sz/2
+  index=stride
+  DO i=0, sz
+  !Sz is max number possible iterations
+    IF(numbers(index) .GT. total) THEN 
+      index = index - stride
+      stride = stride/2
+      CONTINUE
+    ENDIF
+    IF(numbers(index) .LT. total) THEN
+      index = index + stride
+      stride = stride/2
+      CONTINUE
+    ENDIF
+    IF(numbers(index)== total) THEN
+      simple_binary_search = index
+      stride=1
+    ENDIF
+    IF(stride .LE. 1) RETURN
+  ENDDO
+
+  RETURN
+END
