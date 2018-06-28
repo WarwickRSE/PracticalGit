@@ -1,0 +1,50 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int convert(char* name);
+
+int main(int argc, char** argv){
+
+  char name[26] = "abcde\0";
+  int value;
+
+  value = convert(name);
+
+  printf("%i", value);
+  printf("%c", '\n');
+
+  exit(0);
+}
+
+int convert(char* name){
+
+  char first_char;
+  int converted_val;
+
+  first_char = name[0];
+
+  converted_val = 0;
+  if(first_char == 'a'){
+    printf("%c", 'A');
+    converted_val = 1;
+  }else if(first_char == 'b'){
+    printf("%c", 'B');
+    converted_val = 2;
+  }else if(first_char == 'c'){
+    printf("%c", 'C');
+    converted_val = 3;
+  }else if(first_char == 'd'){
+    printf("%c", 'D');
+    converted_val = 4;
+  }else if(first_char == 'e'){
+    printf("%c", 'E');
+    converted_val = 5;
+  }else if(first_char == 'f'){
+    printf("%c", 'F');
+    converted_val = 6;
+  }
+  printf("%c", '\n');
+
+  return converted_val;
+}

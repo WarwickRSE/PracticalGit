@@ -1,12 +1,19 @@
 #!/bin/bash
 
-echo $1
-newdir=$1"/One"
+if [ $# -ne 3 ]
+ then
+  exit 1
+fi
+
+echo $2
+newdir=$2"/One"
 mkdir $newdir
 if [ $? -ne 0 ]
  then
   exit 1
 fi
+
+ext=$3
 
 cd $newdir
 git init
@@ -15,17 +22,17 @@ if [ $? -ne 0 ]
   exit 1
 fi
 
-cp ../Tmp/One/eg.f90.1 eg.f90
-git add eg.f90
-git commit eg.f90 -m 'Initial commit'
+cp $1"/Tmp/One/eg."$ext".1" "eg."$ext
+git add "eg."$ext
+git commit "eg."$ext -m 'Initial commit'
 
 git branch feature
 git checkout feature
-cp ../Tmp/One/eg.f90.3_f eg.f90
-git commit eg.f90 -m 'Add case "D"'
+cp $1"/Tmp/One/eg."$ext".3_f" "eg."$ext
+git commit "eg."$ext -m 'Add case "D"'
 
 git checkout master
-cp ../Tmp/One/eg.f90.2_m eg.f90
-git commit eg.f90 -m 'Add case "E"'
+cp $1"/Tmp/One/eg."$ext".2_m" "eg."$ext
+git commit "eg."$ext -m 'Add case "E"'
 
 git log --all --decorate --oneline --graph

@@ -7,6 +7,8 @@
 
 docstr="Usage: Run this script from parent directory of cloned repo, into which the example dirs will be put"
 
+ext='c'
+
 scrp_dir=`dirname $0`"/"
 ls $scrp_dir"Create_repos.sh" &> /dev/null
 if [ $? -ne 0 ]
@@ -26,7 +28,7 @@ echo "Creating repositories"
 errs=0
 wkdir=`pwd`
 
-$scrp_dir"Create_One.sh" $wkdir
+$scrp_dir"Create_One.sh" "../"$scrp_dir $wkdir $ext
 if [ $? -ne 0 ]
   then
    echo "Error creating One"
@@ -35,7 +37,7 @@ else
   echo ' ****************** Created One'
 fi
 
-$scrp_dir"Create_Two.sh" $wkdir
+$scrp_dir"Create_Two.sh" "../"$scrp_dir $wkdir $ext
 if [ $? -ne 0 ]
   then
    echo "Error creating Two"
@@ -44,7 +46,7 @@ else
   echo ' ****************** Created Two'
 fi
 
-$scrp_dir"Create_Three.sh" $wkdir
+$scrp_dir"Create_Three.sh" "../"$scrp_dir $wkdir $ext
 if [ $? -ne 0 ]
   then
    echo "Error creating Three"
