@@ -1,12 +1,19 @@
 #!/bin/bash
 
-echo $1
-newdir=$1"/Five"
+if [ $# -ne 3 ]
+ then
+  exit 1
+fi
+
+echo $2
+newdir=$2"/Five"
 mkdir $newdir
 if [ $? -ne 0 ]
  then
   exit 1
 fi
+
+ext=$3
 
 cd $newdir
 
@@ -16,41 +23,41 @@ if [ $? -ne 0 ]
   exit 1
 fi
 
-cp ../Tmp/Five/eg.f90.1 eg.f90
-git add eg.f90
-git commit eg.f90 -m 'Initial commit'
+cp $1"/Tmp/Five/eg."$ext".1" "eg."$ext
+git add "eg."$ext
+git commit "eg."$ext -m 'Initial commit'
 
-git checkout master
-cp ../Tmp/Five/eg.f90.2_m eg.f90
-git commit eg.f90 -m 'Add greeting'
+cp $1"/Tmp/Five/eg."$ext".2_m" "eg."$ext
+git commit "eg."$ext -m 'Add greeting'
 
 git branch feature
 
 #Ongoing changes on Master
 
-cp ../Tmp/Five/master*.patch .
-git apply master1.patch
-git commit eg.f90 -m 'Add silent conversion'
+cp $1"/Tmp/Five/master"*".patch."$ext .
 
-git apply master2.patch
-git commit eg.f90 -m 'Add encodings'
+git apply "master1.patch."$ext
+git commit "eg."$ext -m 'Add silent conversion'
 
-#git apply master3.patch
-#git commit eg.f90 -m 'Fix whitespace'
+git apply "master2.patch."$ext
+git commit "eg."$ext -m 'Add encodings'
 
-git apply master4.patch
-git commit eg.f90 -m 'Use silent for convert'
+#git apply "master3.patch."$ext
+#git commit "eg."$ext -m 'Fix whitespace'
+
+git apply "master4.patch."$ext
+git commit "eg."$ext -m 'Use silent for convert'
 
 
 #Our changes on feature
 git checkout feature
-cp ../Tmp/Five/feature1.patch .
-git apply feature1.patch
-git commit eg.f90 -m 'Add tests'
+cp $1"/Tmp/Five/feature1.patch."$ext .
+git apply "feature1.patch."$ext
+git commit "eg."$ext -m 'Add tests'
 
-cp ../Tmp/Five/feature2.patch .
-git apply feature2.patch
-git commit eg.f90 -m 'Add "D" case'
+cp $1"/Tmp/Five/feature2.patch."$ext .
+git apply "feature2.patch."$ext
+git commit "eg."$ext -m 'Add "D" case'
 
 git checkout master
 

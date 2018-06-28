@@ -55,7 +55,7 @@ else
   echo ' ****************** Created Three'
 fi
 
-$scrp_dir"Create_Four.sh" $wkdir
+$scrp_dir"Create_Four.sh" "../"$scrp_dir $wkdir $ext
 if [ $? -ne 0 ]
   then
    echo "Error creating Four"
@@ -64,7 +64,7 @@ else
   echo ' ****************** Created Four'
 fi
 
-$scrp_dir"Create_Five.sh" $wkdir
+$scrp_dir"Create_Five.sh" "../"$scrp_dir $wkdir $ext
 if [ $? -ne 0 ]
   then
    echo "Error creating Five"
