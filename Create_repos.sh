@@ -7,7 +7,22 @@
 
 docstr="Usage: Run this script from parent directory of cloned repo, into which the example dirs will be put"
 
-ext='c'
+if [ $# -ne 1 ]
+ then
+  echo "Please supply language to use, either c or f90"
+  exit 1
+fi
+
+if [[ $1 = 'c' ]]
+ then
+  ext='c'
+elif [[ $1 = 'f90' ]]
+ then
+  ext='f90'
+else
+  echo "Supply either c or f90"
+  exit 1
+fi
 
 scrp_dir=`dirname $0`"/"
 ls $scrp_dir"Create_repos.sh" &> /dev/null
@@ -73,7 +88,7 @@ else
   echo ' ****************** Created Five'
 fi
 
-$scrp_dir"Create_Test.sh" $wkdir
+$scrp_dir"Create_Test.sh" "../"$scrp_dir $wkdir $ext
 if [ $? -ne 0 ]
   then
    echo "Error creating Test"

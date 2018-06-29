@@ -1,4 +1,52 @@
+
+MODULE searches
+
+IMPLICIT NONE
+CONTAINS
+
+FUNCTION simple_binary_search(target_num, numbers)
+!Searches for target in ordered list numbers
+!Return is negative if not found
+
+  INTEGER(KIND=16) :: simple_binary_search
+  INTEGER(KIND=16), INTENT(IN) :: target_num
+  INTEGER(KIND=16) :: i, stride, sz, index, lower, upper
+  INTEGER(KIND=16), DIMENSION(:), INTENT(IN):: numbers
+  
+  simple_binary_search = -1000
+  sz = SIZE(numbers)
+  stride = sz/2
+  index=sz/2
+  lower = 1
+  upper=sz+1
+
+  DO i=1, sz
+  !Sz is max number possible iterations
+    IF(numbers(index) .GT. target_num) THEN 
+      upper = upper - stride
+      index = (lower+upper)/2
+      stride =(upper-lower)/2
+    ELSE IF(numbers(index) .LT. target_num) THEN
+      lower = lower+stride
+      index =(lower+upper)/2
+      stride = (upper-lower)/2
+    ELSE IF(numbers(index)== target_num) THEN
+      PRINT*, 'FOUND!!'
+      simple_binary_search = index
+      stride=0
+    ENDIF
+    IF(stride .LT. 1) RETURN
+  ENDDO
+
+  RETURN
+END
+
+END MODULE searches
+
+
 PROGRAM EULER_CONJECTURE
+
+USE searches
 
 IMPLICIT NONE
 
@@ -31,6 +79,7 @@ DO index=1, maximum
 ENDDO
 
 DO i=1, maximum
+  PRINT*, i
   int_1 = numbers(i)
 
   DO j=i, maximum
@@ -41,13 +90,14 @@ DO i=1, maximum
 
       DO l=k, maximum
         total = int_1+int_2+int_3 + numbers(l)
-        !binary search in numbers for this value, going from l on up
+        !linear search in numbers for this value, going from l on up
         DO m = l, maximum
           IF(total == numbers(m)) THEN
             found = m
             CONTINUE
           ENDIF
         ENDDO
+        !found = simple_binary_search(total, numbers)
         IF(found .GT. 0) THEN
           PRINT*, i, j, k, l
           PRINT*, int_1, int_2, int_3, numbers(l)
@@ -62,36 +112,3 @@ ENDDO
 END PROGRAM
 
 
-INTEGER FUNCTION simple_binary_search(total, numbers)
-! checks whether nth root of number is an integer. 
-!Floor and maximum are the bounds to search root within. 
-!Return is 0 if non-int, or the integer else
-
-  INTEGER(KIND=8) total, i, stride, sz, index
-  INTEGER(KIND=8), DIMENSION(:):: numbers
-  
-  simple_binary_search = 0
-  sz = SIZE(numbers)
-  stride = sz/2
-  index=stride
-  DO i=0, sz
-  !Sz is max number possible iterations
-    IF(numbers(index) .GT. total) THEN 
-      index = index - stride
-      stride = stride/2
-      CONTINUE
-    ENDIF
-    IF(numbers(index) .LT. total) THEN
-      index = index + stride
-      stride = stride/2
-      CONTINUE
-    ENDIF
-    IF(numbers(index)== total) THEN
-      simple_binary_search = index
-      stride=1
-    ENDIF
-    IF(stride .LE. 1) RETURN
-  ENDDO
-
-  RETURN
-END

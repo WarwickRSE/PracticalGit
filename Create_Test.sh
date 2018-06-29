@@ -1,12 +1,19 @@
 #!/bin/bash
 
-echo $1
-newdir=$1"/Test"
+if [ $# -ne 3 ]
+ then
+  exit 1
+fi
+
+echo $2
+newdir=$2"/Test"
 mkdir $newdir
 if [ $? -ne 0 ]
  then
   exit 1
 fi
+
+ext=$3
 
 cd $newdir
 
@@ -16,28 +23,31 @@ if [ $? -ne 0 ]
   exit 1
 fi
 
-cp ../Tmp/Test/ShortestPaper.f90.1 ShortestPaper.f90
-git add ShortestPaper.f90
-git commit ShortestPaper.f90 -m 'Initial commit'
+cp $1"/Tmp/Test/Readme.txt" Readme.txt
+git add Readme.txt
+
+cp $1"/Tmp/Test/ShortestPaper."$ext".1" "ShortestPaper."$ext
+git add "ShortestPaper."$ext
+git commit -a -m 'Initial commit'
 
 git branch bill/cleanup
 git branch ben/cleanup
 
 git checkout bill/cleanup
 
-cp ../Tmp/Test/ShortestPaper.f90.1_bill ShortestPaper.f90
-git commit ShortestPaper.f90 -m "Fix Whitespace"
+cp $1"/Tmp/Test/ShortestPaper."$ext".1_bill" "ShortestPaper."$ext
+git commit "ShortestPaper."$ext -m "Fix Whitespace"
 
-cp ../Tmp/Test/ShortestPaper.f90.2_bill ShortestPaper.f90
-git commit ShortestPaper.f90 -m "Fix kinds and unnecessary variable"
+cp $1"/Tmp/Test/ShortestPaper."$ext".2_bill" "ShortestPaper."$ext
+git commit "ShortestPaper."$ext -m "Fix types and unnecessary variable"
 
 git checkout ben/cleanup
 
-cp ../Tmp/Test/ShortestPaper.f90.1_ben ShortestPaper.f90
-git commit ShortestPaper.f90 -m "Fix name collisions with builtins"
+cp $1"/Tmp/Test/ShortestPaper."$ext".1_ben" "ShortestPaper."$ext
+git commit "ShortestPaper."$ext -m "Fix names"
 
-cp ../Tmp/Test/ShortestPaper.f90.2_ben ShortestPaper.f90
-git commit ShortestPaper.f90 -m "Fix stray 'float'"
+cp $1"/Tmp/Test/ShortestPaper."$ext".2_ben" "ShortestPaper."$ext
+git commit "ShortestPaper."$ext -m "Fix stray 'float'"
 
 git checkout master
 git log --all --decorate --oneline --graph

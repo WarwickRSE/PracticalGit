@@ -1,0 +1,100 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <limits.h>
+#include <float.h>
+#include <math.h>
+
+long simple_binary_search(long target, long* numbers, long len);
+
+int main(int argc, char ** argv){
+
+  long exponent = 0, maximum = 0, i, j, k, l, m, found = 0;
+  long int_1, int_2, int_3, int_4, total, index;
+  long * numbers;
+  double tolerance;
+  double one_over_exp;
+  double root, tmp_root;
+
+  maximum = 200;
+  exponent = 5;
+  tolerance = 2e-5;
+  one_over_exp = 1./(float)exponent;
+
+  tmp_root = pow((double) maximum, exponent);
+  printf("%f %f %10.3e %li\n", tmp_root, pow(tmp_root, one_over_exp), DBL_MAX, LONG_MAX);
+
+  if(LONG_MAX <= tmp_root){
+    printf("%s", "Warning, insufficient integer size\n");
+    exit(1);
+  }
+
+  numbers = malloc(sizeof(long int)*maximum);
+
+  for(index=0; index<maximum; index++){
+    numbers[index] = pow(index, exponent);
+  }
+
+  for(i = 1; i < maximum; i++){
+    printf("%li\n", i);
+    int_1 = numbers[i];
+
+    for(j = i; j < maximum; j++){
+      int_2 = numbers[j];
+
+      for(k = j; k < maximum; k++){
+        int_3 = numbers[k];
+
+        for(l = k; l < maximum; l++){
+          total = int_1 + int_2 + int_3 + numbers[l];
+          //Search in numbers for this value, from l on up
+          /*for(m=l; m< maximum; m++){
+            if(total == numbers[m]){
+              found = m;
+              break;
+            }
+          }*/
+          found = simple_binary_search(total, numbers, maximum);
+          if(found > 0){
+            printf("%li %li %li %li\n", i, j, k, l);
+            printf("%li %li %li %li\n", int_1, int_2, int_3, numbers[l]);
+            printf("%li : %li\n", total, found);
+            exit(0);
+          }
+        }
+      }
+    }
+  }
+}
+
+long simple_binary_search(long target, long* numbers, long sz){
+//Searches for target in ordered list numbers, length sz
+//Returns negative if not found
+
+  long found_index;
+  long i, stride, index, lower, upper;
+
+  found_index = -1000;
+  stride = sz/2;
+  index = sz/2;
+  lower = 1;
+  upper = sz + 1;
+
+  for(i = 0; i < sz; i++){
+  //Sz is max number possible iterations
+    if(numbers[index] > target){
+      upper = upper - stride;
+      index = (lower + upper)/2;
+      stride =(upper - lower)/2;
+    }else if(numbers[index] < target){
+      lower = lower + stride;
+      index =(lower + upper)/2;
+      stride = (upper - lower)/2;
+    }else if(numbers[index]== target){
+      found_index = index;
+      stride=0;
+    }
+    if(stride < 1) break;
+  }
+  return found_index;
+}
+
