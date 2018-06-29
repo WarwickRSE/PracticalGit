@@ -1,0 +1,59 @@
+--------------------------------------
+'One'
+	Branches have different final cases, D and E
+	Graph  is:
+* 55f99f3 (HEAD, master) Add case 'E'
+| * e62d478 (feature) Add 'D'
+|/  
+* 1f79053 Initial file
+
+	Merging gives a conflict because can't auto-resolve the two cases. Git uses surrounding lines for context and in this case the previous lines and the 'ENDIF' fool it
+
+	Conflict is easily fixed by removing markers. May want to reorder cases for clarity though!!!
+	
+	Extra: merge is clean in sane implementation of the 'F' case. History is now mixed together though, 
+* 504b102 (HEAD, master, feature) Add 'F' case
+*   3c46582 Merge branch 'feature'
+|\  
+| * e62d478 Add 'D'
+* | 55f99f3 Add case 'E'
+|/  
+* 1f79053 Initial file
+
+
+-------------------------------------
+'Two'
+
+	One uses 'greet' the other 'greeting', and the set and print are in different places
+
+	Result has conflict over namings, and identifies the two prints as different operations
+
+	Extra: yes, putting prints in same place lets them be identified as the same and gives a second conflict
+
+-------------------------------------
+'Three'
+Mainly Whitespace, also one has 'd' and 'f' cases as well as 'e'
+Mostly because of the whitespace
+This helps a lot
+This also helps although gets a bit too fine perhaps
+
+-------------------------------------
+'Four'
+There is a conflict between the reverted code and the new code, even though the reverted code is no longer 'there'
+It doesn't compile, because the definition of 'greet' was reverted
+New conflict is between values of 'greet'
+
+  Extra: you could create a patch, although there's a chance this wont apply smoothly. You could run the revert without committing, and then add only the changes you want. You can also give up, create a diff and reapply the changes by hand. 
+
+-------------------------------------
+'Five'
+The addition to convert has accidentally been matched into convert_silent. Also, the new modules have to be merged by hand.
+
+-------------------------------------
+'Test'
+Mostly the changes have to be done completely by hand. 
+
+
+
+
+	
