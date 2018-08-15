@@ -13,7 +13,9 @@ To set this up:
 
 `git clone https://github.com/WarwickRSE/PracticalGit.git`
 
-`./PracticalGit/Create_repos.sh`
+Choose either FORTRAN-90 (f90) or C (c) code for the examples
+
+`./PracticalGit/Create_repos.sh {f90|c}`
 
 `cp ./PracticalGit/Exercises.pdf .`
 
